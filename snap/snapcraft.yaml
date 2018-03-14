@@ -1,0 +1,22 @@
+name: snapcraft-pr
+version: '0.1'
+summary: Utility to quickly setup and test Snapcraft pull requests
+description: |
+  snapcraft-pr can dynamically setup virtual environments solely for testing
+  a given Snapcraft pull request.
+
+grade: stable
+confinement: classic
+
+architectures: [all]
+
+apps:
+  snapcraft-pr:
+    command: bin/snapcraft-pr
+
+  init:
+    command: bin/init
+
+parts:
+  my-part:
+    plugin: dump

@@ -1,0 +1,21 @@
+#!/bin/sh
+
+if [ -z "$1" ]; then
+	echo "Must supply pull request number" >&2
+	exit 1
+fi
+
+PULL_REQUEST="$1"
+VENV_PATH="${SNAP_USER_DATA}/venvs/${PULL_REQUEST}"
+
+if [ ! -d "$VENV_PATH" ]; then
+	echo "This PR needs to be initialized. Run 'snapcraft-pr.init $PULL_REQUEST'" >&2
+	exit 1
+fi
+
+# Activate initialized venv containing snapcraft
+. "${VENV_PATH}/bin/activate"
+
+# Run snapcraft with args
+shift
+snapcraft "$@"
