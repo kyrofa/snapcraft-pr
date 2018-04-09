@@ -1,5 +1,5 @@
 name: snapcraft-pr
-version: '0.1'
+version: '0.2'
 summary: Quickly setup and test Snapcraft pull requests
 description: |
   This snap is used to test and evaluate individual pull requests for Snapcraft.
@@ -25,6 +25,7 @@ architectures: [all]
 apps:
   snapcraft-pr:
     command: bin/snapcraft-pr
+    completer: snapcraft-pr-completer
 
   init:
     command: bin/init

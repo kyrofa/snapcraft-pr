@@ -13,6 +13,7 @@ echo "Installing system dependencies. This may prompt for your password"
 sudo apt install -y gcc g++ make python3-dev python3-venv libffi-dev libsodium-dev libapt-pkg-dev squashfs-tools patchelf execstack rpm2cpio p7zip-full
 
 # Now setup a venv for this PR
+rm -rf "$VENV_PATH"
 mkdir -p "$VENV_PATH"
 python3 -m venv "$VENV_PATH"
 . "${VENV_PATH}/bin/activate"
