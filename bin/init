@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 if [ -z "$1" ]; then
 	echo "Must supply pull request number" >&2
@@ -10,7 +10,15 @@ VENV_PATH="${SNAP_USER_DATA}/venvs/${PULL_REQUEST}"
 
 # First, install Snapcraft's dependencies. Yes, these may change over time.
 echo "Installing system dependencies. This may prompt for your password"
-sudo apt install -y gcc g++ make python3-dev python3-venv libffi-dev libsodium-dev libapt-pkg-dev squashfs-tools patchelf execstack rpm2cpio p7zip-full
+if ! sudo apt update; then
+	echo "Unable to update package index" >&2
+	exit 1
+fi
+
+if ! sudo apt install -y gcc g++ make python3-dev python3-venv libffi-dev libsodium-dev libapt-pkg-dev squashfs-tools patchelf execstack rpm2cpio p7zip-full libyaml-dev; then
+	echo "Unable to install dependencies" >&2
+	exit 1
+fi
 
 # Now setup a venv for this PR
 rm -rf "$VENV_PATH"
@@ -24,7 +32,10 @@ SNAPCRAFT_DIR="$(mktemp -d)/snapcraft"
 mkdir -p "$SNAPCRAFT_DIR"
 git -C "$SNAPCRAFT_DIR" init
 git -C "$SNAPCRAFT_DIR" remote add origin https://github.com/snapcore/snapcraft
-git -C "$SNAPCRAFT_DIR" fetch origin "pull/${PULL_REQUEST}/head"
+if ! git -C "$SNAPCRAFT_DIR" fetch origin "pull/${PULL_REQUEST}/head"; then
+	echo "Failed to fetch PR #$PULL_REQUEST. Please double check the number" >&2
+	exit 1
+fi
 git -C "$SNAPCRAFT_DIR" checkout FETCH_HEAD 
 pip install -r "${SNAPCRAFT_DIR}/requirements.txt" "$SNAPCRAFT_DIR"
 rm -rf "$SNAPCRAFT_DIR"

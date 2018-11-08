@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh -e
 
 if [ -z "$1" ]; then
 	echo "Must supply pull request number" >&2
