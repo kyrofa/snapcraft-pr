@@ -26,6 +26,12 @@ apps:
   snapcraft-pr:
     command: bin/snapcraft-pr
     completer: snapcraft-pr-completer
+    environment:
+      # Don't hide tracebacks
+      SNAPCRAFT_MANAGED_HOST: "yes"
+
+      # Don't use multipass
+      SNAPCRAFT_BUILD_ENVIRONMENT: "host"
 
   init:
     command: bin/init
