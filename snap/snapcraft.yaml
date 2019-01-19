@@ -1,5 +1,5 @@
 name: snapcraft-pr
-version: '0.5'
+version: '0.6'
 summary: Quickly setup and test Snapcraft pull requests
 description: |
   This snap is used to test and evaluate individual pull requests for Snapcraft.
