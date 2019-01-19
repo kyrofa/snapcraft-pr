@@ -18,7 +18,7 @@ fi
 
 # Run snapcraft with args... but not cleanbuild, which won't work as expected
 shift
-if [ "$#" -gt 0 ] && [ "${@#*cleanbuild}" != "$@" ]; then
+if [ "$#" -gt 0 ] && [ -z "${*##*cleanbuild*}" ]; then
 	echo "snapcraft-pr doesn't support cleanbuilds, as the snapcraft" >&2
 	echo "CLI in the container will just pull in the deb, i.e. not use" >&2
 	echo "the PR you're trying to test." >&2
